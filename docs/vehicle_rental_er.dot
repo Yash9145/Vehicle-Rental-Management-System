@@ -1,0 +1,62 @@
+digraph ER {
+graph [rankdir=LR, bgcolor="white", pad="0.3", nodesep="0.5", ranksep="0.8", fontname="Arial"];
+node [shape=plain, fontname="Arial"];
+edge [color="#61758a", penwidth=1.5, fontname="Arial", fontsize=10];
+
+users [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" BGCOLOR="#ffffff">
+<TR><TD BGCOLOR="#5b9bd5" ALIGN="LEFT"><FONT COLOR="white"><B>users</B></FONT></TD></TR>
+<TR><TD ALIGN="LEFT">🔑 user_id INT</TD></TR><TR><TD ALIGN="LEFT">full_name VARCHAR(100)</TD></TR>
+<TR><TD ALIGN="LEFT">username VARCHAR(50) UNIQUE</TD></TR><TR><TD ALIGN="LEFT">password VARCHAR(255)</TD></TR>
+<TR><TD ALIGN="LEFT">role ENUM</TD></TR><TR><TD ALIGN="LEFT">created_at TIMESTAMP</TD></TR>
+</TABLE>>];
+
+customers [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" BGCOLOR="#ffffff">
+<TR><TD BGCOLOR="#5b9bd5" ALIGN="LEFT"><FONT COLOR="white"><B>customers</B></FONT></TD></TR>
+<TR><TD ALIGN="LEFT">🔑 customer_id INT</TD></TR><TR><TD ALIGN="LEFT">full_name VARCHAR(100)</TD></TR>
+<TR><TD ALIGN="LEFT">email VARCHAR(100) UNIQUE</TD></TR><TR><TD ALIGN="LEFT">phone VARCHAR(15) UNIQUE</TD></TR>
+<TR><TD ALIGN="LEFT">address VARCHAR(255)</TD></TR><TR><TD ALIGN="LEFT">driving_license_no VARCHAR(50) UNIQUE</TD></TR>
+<TR><TD ALIGN="LEFT">created_at TIMESTAMP</TD></TR></TABLE>>];
+
+categories [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" BGCOLOR="#ffffff">
+<TR><TD BGCOLOR="#5b9bd5" ALIGN="LEFT"><FONT COLOR="white"><B>vehicle_categories</B></FONT></TD></TR>
+<TR><TD ALIGN="LEFT">🔑 category_id INT</TD></TR><TR><TD ALIGN="LEFT">category_name VARCHAR(50) UNIQUE</TD></TR>
+<TR><TD ALIGN="LEFT">description VARCHAR(255)</TD></TR><TR><TD ALIGN="LEFT">daily_rate DECIMAL(10,2)</TD></TR></TABLE>>];
+
+vehicles [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" BGCOLOR="#ffffff">
+<TR><TD BGCOLOR="#5b9bd5" ALIGN="LEFT"><FONT COLOR="white"><B>vehicles</B></FONT></TD></TR>
+<TR><TD ALIGN="LEFT">🔑 vehicle_id INT</TD></TR><TR><TD ALIGN="LEFT">🔗 category_id INT</TD></TR>
+<TR><TD ALIGN="LEFT">vehicle_number VARCHAR(20) UNIQUE</TD></TR><TR><TD ALIGN="LEFT">brand VARCHAR(50)</TD></TR>
+<TR><TD ALIGN="LEFT">model VARCHAR(50)</TD></TR><TR><TD ALIGN="LEFT">manufacture_year YEAR</TD></TR>
+<TR><TD ALIGN="LEFT">color VARCHAR(30)</TD></TR><TR><TD ALIGN="LEFT">fuel_type ENUM</TD></TR>
+<TR><TD ALIGN="LEFT">transmission ENUM</TD></TR><TR><TD ALIGN="LEFT">seating_capacity INT</TD></TR>
+<TR><TD ALIGN="LEFT">status ENUM</TD></TR></TABLE>>];
+
+rentals [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" BGCOLOR="#ffffff">
+<TR><TD BGCOLOR="#5b9bd5" ALIGN="LEFT"><FONT COLOR="white"><B>rentals</B></FONT></TD></TR>
+<TR><TD ALIGN="LEFT">🔑 rental_id INT</TD></TR><TR><TD ALIGN="LEFT">🔗 customer_id INT</TD></TR>
+<TR><TD ALIGN="LEFT">🔗 vehicle_id INT</TD></TR><TR><TD ALIGN="LEFT">rental_date DATE</TD></TR>
+<TR><TD ALIGN="LEFT">expected_return_date DATE</TD></TR><TR><TD ALIGN="LEFT">actual_return_date DATE</TD></TR>
+<TR><TD ALIGN="LEFT">daily_rate DECIMAL(10,2)</TD></TR><TR><TD ALIGN="LEFT">total_amount DECIMAL(10,2)</TD></TR>
+<TR><TD ALIGN="LEFT">rental_status ENUM</TD></TR><TR><TD ALIGN="LEFT">notes VARCHAR(500)</TD></TR>
+<TR><TD ALIGN="LEFT">created_at TIMESTAMP</TD></TR></TABLE>>];
+
+payments [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" BGCOLOR="#ffffff">
+<TR><TD BGCOLOR="#5b9bd5" ALIGN="LEFT"><FONT COLOR="white"><B>payments</B></FONT></TD></TR>
+<TR><TD ALIGN="LEFT">🔑 payment_id INT</TD></TR><TR><TD ALIGN="LEFT">🔗 rental_id INT</TD></TR>
+<TR><TD ALIGN="LEFT">payment_date DATETIME</TD></TR><TR><TD ALIGN="LEFT">amount DECIMAL(10,2)</TD></TR>
+<TR><TD ALIGN="LEFT">payment_method ENUM</TD></TR><TR><TD ALIGN="LEFT">payment_status ENUM</TD></TR>
+<TR><TD ALIGN="LEFT">transaction_reference VARCHAR(100)</TD></TR></TABLE>>];
+
+maintenance [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" BGCOLOR="#ffffff">
+<TR><TD BGCOLOR="#5b9bd5" ALIGN="LEFT"><FONT COLOR="white"><B>maintenance</B></FONT></TD></TR>
+<TR><TD ALIGN="LEFT">🔑 maintenance_id INT</TD></TR><TR><TD ALIGN="LEFT">🔗 vehicle_id INT</TD></TR>
+<TR><TD ALIGN="LEFT">service_date DATE</TD></TR><TR><TD ALIGN="LEFT">description VARCHAR(255)</TD></TR>
+<TR><TD ALIGN="LEFT">cost DECIMAL(10,2)</TD></TR><TR><TD ALIGN="LEFT">maintenance_status ENUM</TD></TR>
+<TR><TD ALIGN="LEFT">next_service_date DATE</TD></TR></TABLE>>];
+
+categories -> vehicles [label="1 : N"];
+customers -> rentals [label="1 : N"];
+vehicles -> rentals [label="1 : N"];
+rentals -> payments [label="1 : N"];
+vehicles -> maintenance [label="1 : N"];
+}

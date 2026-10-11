@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('input[type=date]').forEach(x=>{if(!x.value&&x.name==='rental_date')x.value=new Date().toISOString().slice(0,10)});setTimeout(()=>document.querySelectorAll('.flash').forEach(x=>x.style.opacity='0'),5000)});
